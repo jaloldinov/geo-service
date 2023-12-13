@@ -12,7 +12,6 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/pkg/errors v0.8.1
 	github.com/redis/go-redis/v9 v9.3.0
-	github.com/rogpeppe/go-internal v1.9.0
 	github.com/spf13/cast v1.5.1
 	github.com/streamingfast/logging v0.0.0-20230608130331-f22c91403091
 	go.uber.org/zap v1.26.0

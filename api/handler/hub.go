@@ -15,16 +15,14 @@ type Hub struct {
 	Register   chan *Client
 	Unregister chan *Client
 	Broadcast  chan *models.Message
-	SendFile   chan *File // New channel for file sending
 }
 
 func NewHub() *Hub {
 	return &Hub{
 		Rooms:      make(map[string]*Room),
-		Register:   make(chan *Client, 5),
-		Unregister: make(chan *Client, 5),
-		Broadcast:  make(chan *models.Message, 5),
-		SendFile:   make(chan *File, 5),
+		Register:   make(chan *Client, 256),
+		Unregister: make(chan *Client, 256),
+		Broadcast:  make(chan *models.Message, 256),
 	}
 }
 
@@ -61,13 +59,7 @@ func (h *Hub) Run() {
 				for _, cl := range h.Rooms[m.RoomID].Clients {
 					cl.Message <- m
 				}
-			}
 
-		case f := <-h.SendFile: // Handle file sending
-			if _, ok := h.Rooms[f.RoomID]; ok {
-				for _, cl := range h.Rooms[f.RoomID].Clients {
-					cl.File <- f
-				}
 			}
 		}
 	}

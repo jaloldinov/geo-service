@@ -1,10 +1,10 @@
 package postgres
 
 import (
-	"geo/config"
-	"geo/storage"
 	"context"
 	"fmt"
+	"geo/config"
+	"geo/storage"
 
 	"github.com/jackc/pgx/v4/pgxpool"
 )
@@ -14,6 +14,7 @@ type store struct {
 	users    *userRepo
 	messages *messageRepo
 	// ws    *wsRepo
+	//userGeo *userGeoRepo
 }
 
 func NewStorage(ctx context.Context, cfg config.Config) (storage.StorageI, error) {
@@ -47,6 +48,13 @@ func (b *store) User() storage.UsersI {
 	}
 	return b.users
 }
+
+//func (b *store) UserGeo() storage.UserGeoI {
+//	if b.userGeo == nil {
+//		b.userGeo = NewUserGeoRepo(b.db)
+//	}
+//	return b.userGeo
+//}
 
 func (b *store) Message() storage.MessageI {
 	if b.messages == nil {

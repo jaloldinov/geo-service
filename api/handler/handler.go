@@ -14,3 +14,7 @@ type Handler struct {
 func NewHandler(strg storage.StorageI, hub *Hub, loger logger.LoggerI) *Handler {
 	return &Handler{storage: strg, hub: hub, log: loger}
 }
+
+//func NewHandler(strg storage.StorageI, loger logger.LoggerI) *Handler {
+//	return &Handler{storage: strg, log: loger}
+//}

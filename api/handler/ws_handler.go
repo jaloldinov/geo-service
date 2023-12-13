@@ -2,8 +2,7 @@ package handler
 
 import (
 	"geo/models"
-	"geo/pkg/helper"
-	"context"
+	"io"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -47,25 +46,24 @@ func (h *Handler) HandleFileTransfer(c *gin.Context) {
 	}
 
 	// Read the uploaded file content
-	//fileContent, err := file.Open()
-	//if err != nil {
-	//	c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-	//	return
-	//}
-	//defer fileContent.Close()
-	path, _ := helper.Service{}.Upload(context.Background(), file, "file/")
-	//fmt.Println(path)
-	//content, err := io.ReadAll(fileContent)
-	//if err != nil {
-	//	c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-	//	return
-	//}
+	fileContent, err := file.Open()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	defer fileContent.Close()
+
+	content, err := io.ReadAll(fileContent)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 
 	roomd_id := c.Query("room_id")
 
 	m := &File{
 		Name:    file.Filename,
-		Content: path,
+		Content: content,
 		RoomID:  roomd_id,
 	}
 

@@ -1,5 +1,10 @@
 package models
 
+type MessageLocation struct {
+	Latitude  float32 `json:"latitude"`
+	Longitude float32 `json:"longitude"`
+}
+
 type Message struct {
 	Content  string `json:"content"`
 	RoomID   string `json:"roomId"`

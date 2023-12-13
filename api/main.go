@@ -18,7 +18,7 @@ func NewServer(h *handler.Handler) *gin.Engine {
 	r.GET("/ws/getRooms", h.GetRooms)
 	r.GET("/ws/getClients/:roomId", h.GetClients)
 
-	r.POST("ws/file-upload", h.HandleFileTransfer)
+	//r.POST("ws/file-upload", h.HandleFileTransfer)
 
 	return r
 }

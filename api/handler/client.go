@@ -10,16 +10,7 @@ import (
 type Client struct {
 	Conn     *websocket.Conn
 	Message  chan *models.Message
-	File     chan *File // New channel for file sending
-	ID       string     `json:"id"`
-	RoomID   string     `json:"roomId"`
-	Username string     `json:"username"`
-}
-
-type File struct {
-	Name     string `json:"name"`
-	Content  string `json:"content"`
-	RoomID   string `json:"roomId"`
+	ID       string `json:"id"`
 	Username string `json:"username"`
 }
 
@@ -35,11 +26,6 @@ func (c *Client) writeMessage() {
 				return
 			}
 			c.Conn.WriteJSON(message)
-		case file, ok := <-c.File:
-			if !ok {
-				return
-			}
-			c.Conn.WriteJSON(file)
 		}
 	}
 }
@@ -59,24 +45,13 @@ func (c *Client) readMessage(hub *Hub) {
 			break
 		}
 
-		if messageType == websocket.BinaryMessage {
-			file := &File{
-				//Content:  data,
-				RoomID:   c.RoomID,
-				Username: c.Username,
-			}
-
-			hub.SendFile <- file
-
-		} else if messageType == websocket.TextMessage {
+		if messageType == websocket.TextMessage {
 			msg := &models.Message{
 				Content:  string(data),
-				RoomID:   c.RoomID,
 				Username: c.Username,
 			}
 
 			hub.Broadcast <- msg
-
 		}
 	}
 }

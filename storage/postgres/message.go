@@ -1,10 +1,9 @@
 package postgres
 
 import (
-	"geo/models"
 	"context"
 	"fmt"
-
+	"geo/models"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
@@ -21,8 +20,8 @@ func NewMessageRepo(db *pgxpool.Pool) *messageRepo {
 func (b *messageRepo) CreateMessage(c context.Context, req *models.Message) (string, error) {
 
 	query := `INSERT INTO messages(
-					room_id, 
-					user_id, 
+					room_id,
+					user_id,
 					content,
 					created_at
 					) VALUES ($1, $2, $3, NOW())`

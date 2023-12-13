@@ -2,7 +2,6 @@ package handler
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"geo/config"
 	"geo/models"
@@ -62,7 +61,7 @@ func (h *Handler) Login(c *gin.Context) {
 	// Compare hashed password with plain text password
 	err = helper.ComparePasswords([]byte(resp.Password), []byte(req.Password))
 	if err != nil {
-		if errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) {
+		if err == bcrypt.ErrMismatchedHashAndPassword {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "login or password didn't match"})
 		} else {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "password comparison failed"})
